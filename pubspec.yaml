@@ -1,0 +1,53 @@
+name: ffbah_example
+
+workspace:
+  - server
+  - app
+
+environment:
+  sdk: ">=3.7.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.4.0
+  shelf: ^1.4.0
+  shelf_router: ^1.1.0
+
+dev_dependencies:
+  melos: ^7.0.0-dev.7
+
+melos:
+  command:
+    bootstrap:
+      environment:
+        sdk: ">=3.7.0 <4.0.0"
+      dev_dependencies:
+        test: any
+
+  scripts:
+    lint:all:
+      steps:
+        - analyze
+        - format
+      description: Run all static analysis checks.
+
+    analyze:
+      run: melos exec dart analyze .
+      description: Run `dart analyze` for all packages.
+
+    format-check:
+      run: melos exec dart format . --set-exit-if-changed
+      description: Run `dart format` checks for all packages.
+
+    upgrade: melos exec flutter pub upgrade
+
+    test:select:
+      run: melos exec -c 1 -- flutter test
+      packageFilters:
+        dirExists: test
+      description: Run `flutter test` for selected packages.
+
+    test:
+      run: melos run test:select --no-select
+      description: Run all Flutter tests in this project.
