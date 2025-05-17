@@ -62,16 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () async {
                 try {
-                  final response = await client.get(
-                    Uri.parse('localhost:8080/api/name'),
-                  );
+                  final response = await client.get(Uri.parse('/api/name'));
                   if (response.statusCode != 200) {
                     throw '${response.statusCode}';
                   }
                   setState(() {
                     final data =
-                        json.decode(response.body) as Map<String, String>;
-                    name = data['name'] ?? 'empty name';
+                        json.decode(response.body) as Map<String, Object?>;
+                    name = '${data['name'] ?? 'empty name'}';
                   });
                 } catch (e) {
                   setState(() {

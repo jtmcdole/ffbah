@@ -27,7 +27,7 @@ void main(List<String> args) async {
   final ip = InternetAddress.anyIPv4;
 
   final statichandler = createStaticHandler(
-    '../static',
+    '/workspace/app/build/web',
     defaultDocument: 'index.html',
   );
 
