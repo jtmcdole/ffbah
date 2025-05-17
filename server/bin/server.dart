@@ -5,6 +5,7 @@ import 'package:namer/namer.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf_static/shelf_static.dart';
 
 // Configure routes.
 final _router =
@@ -25,10 +26,21 @@ void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
 
+  final statichandler = createStaticHandler(
+    '../static',
+    defaultDocument: 'index.html',
+  );
+
+  final cascadeHandler =
+      Cascade() //
+          .add(statichandler)
+          .add(_router.call)
+          .handler;
+
   // Configure a pipeline that logs requests.
   final handler = Pipeline()
       .addMiddleware(logRequests())
-      .addHandler(_router.call);
+      .addHandler(cascadeHandler);
 
   // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
