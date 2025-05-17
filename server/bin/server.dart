@@ -22,7 +22,15 @@ Response _nameHandler(Request req) {
   return Response.ok(json.encode({'name': animal(adjectives: 0, verbs: 1)}));
 }
 
+handleSigTerm(ProcessSignal signal) async {
+  if (signal != ProcessSignal.sigterm) return;
+  print('sigterm - exiting srever');
+  exit(0);
+}
+
 void main(List<String> args) async {
+  ProcessSignal.sigterm.watch().listen(handleSigTerm);
+
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
 
