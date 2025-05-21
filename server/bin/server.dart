@@ -10,13 +10,7 @@ import 'package:shelf_static/shelf_static.dart';
 // Configure routes.
 final _router =
     Router()
-      ..get('/', _rootHandler)
       ..get('/api/name', _nameHandler);
-
-Response _rootHandler(Request req) {
-  // todo: static route to flutter web
-  return Response.ok('Hello, World!\n');
-}
 
 Response _nameHandler(Request req) {
   return Response.ok(json.encode({'name': animal(adjectives: 0, verbs: 1)}));
